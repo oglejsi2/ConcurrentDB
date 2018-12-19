@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <h1>Expected knowledge</h1>
+        <ol>
+          <li>basic pl/sql and distributed transactions with  using dblink</li>
+          <li>basic knowledge of java and jdbc </li>
+        </ol>        
+        
+        <h1>Expected infrastructure</h1>
+        <ol>
+          <li>Two oracle databases</li>
+          <li>java version 6</li>          
+        </ol>        
+        <p>You can have one oracle database with two users (schemas).</p>
+          
+        <h1>Problem description</h1>   
+        <p>
+            We have pl/sql code, which has to be executed on several oracle servers. After each server has finished, the whole process has to be commited. This could be solved using dblinks. 
+            Problem with such solution is:
+        </p>
+        <ol>
+          <li>oracle session is single threaded -> we can't achieve paralelism</li>
+          <li>dblinks locks table rows. Table rows in first database will be locked until last database has finished</li>
+        </ol>   
+        <h1>Summary of goals</h1>           
+        <ol>            
+            <li>accelerate execution with parallelism</li>
+            <li>shorten locking times</li>
+        </ol>    
+        <p>Second solution is using java with threads. Using threads is not sufficient because we have to commit the whole thing only if pl/sql finished successfuly on all servers. To solve the problem we need a program which will: </p>
+        <ol>
+          <li>trigger execution of pl/sql code</li>
+          <li>supervise execution and trigger commit at the end</li>
+        </ol>        
+
+        <h3>Data structure</h3>
+        <ol>
+          <li>List of servers</li>
+          <li>Table to insert sample data</li>
+          
+        </ol>
+        <h3>PL/SQL</h3>
+        <ol>
+            <li>PL/SQL Procedure to insert sample data</li>
+            <li>Solution with dblinks</li>
+        </ol>
+        <h3>Call PL/SQL procedure from java</h3>
+        <h3>Use executor as triggering and supervising program</h3>
+        <h3>Deploy java to oracle database server</h3>
+        <h3>Extra benefits</h3>
+        
+    </body>
+</html>
