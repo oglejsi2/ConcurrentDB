@@ -26,8 +26,8 @@ and open the template in the editor.
           
         <h1>Problem description</h1>   
         <p>
-            We have pl/sql code, which has to be executed on several oracle servers. After each server has finished, the whole process has to be commited. This could be solved using dblinks. 
-            Problem with such solution is:
+            We have pl/sql code, which has to be executed on several oracle servers. After each server has finished, the whole process has to be commited. 
+            This could be solved using dblinks. Problem with such solution is:
         </p>
         <ol>
           <li>oracle session is single threaded -> we can't achieve paralelism</li>
@@ -43,22 +43,46 @@ and open the template in the editor.
           <li>trigger execution of pl/sql code</li>
           <li>supervise execution and trigger commit at the end</li>
         </ol>        
-
-        <h3>Data structure</h3>
+        Java has just such program. It is called Executor.
+        <p>
+            There are serveral short lessons in which we will develop final program. Each lesson has files associated with it:
+            <br> -  CallableTask_Lesson is class with logic that has to be executed
+            <br> -  File Lesson contains executor which will execute logic stored in CallableTask_Lesson. Actually executor can only execute one procedure named call (it is stored in CallableTask_Lesson class)
+            <br> One more thing to remember. Executor has a shutdown method. It doesn't terminate executor immediatelly. Executor waits until all threads has finished and then terminates.
+        </p>
         <ol>
-          <li>List of servers</li>
-          <li>Table to insert sample data</li>
-          
-        </ol>
-        <h3>PL/SQL</h3>
-        <ol>
-            <li>PL/SQL Procedure to insert sample data</li>
-            <li>Solution with dblinks</li>
-        </ol>
-        <h3>Call PL/SQL procedure from java</h3>
-        <h3>Use executor as triggering and supervising program</h3>
-        <h3>Deploy java to oracle database server</h3>
-        <h3>Extra benefits</h3>
-        
+          <li>Lesson 1 - start executor and do some work</li>                    
+                This lesson shows how executor works. Executor is program which recieves requests and opens threads in which requests are executed. 
+                <br>First we initialize executor
+                <br>Now we have executor. Let's give him some work to do by callgin submit method with parameter CallableTask_Lesson1. Submit will execute call method in class CallableTask_Lesson1
+                <br>shutdown executor. If you don't shutdown executor, it will wait for new tasks. Shutdown will prevent executor from recieving new requests. Executor will wait until all calls are finished and after that it will terminate.                
+                <br>
+                <br>
+          <li>Lesson 2 - we will add parameter to the call method and show how executor waits until all tasks are finished</li>
+                <br> Add parameter to method call in the CallableTask_Lesson2 class
+                <br> We will add random sleep time -> each call will take different time to finish
+                <br>Although we made shutdown of Executer, it waits for both tasks to finish                
+                <br>
+                <br>
+          <li>Lesson 3 - prepare the database scripts</li>
+                <br> Our goal is to execute commands on several servers and then commit all of them at once
+                <br> We need data struture, tables and such to support our goal.
+                <br> In SERVER_LIST we will have list of servers to connect to
+                <br> mydata - table with data which will be added by executor
+                <br> package CONCURENTTRANSACTIONS  with function mydata_ins which will be executed by executor
+                <br>
+                <br>                
+          <li>Lesson 4 - call database procedure</li>
+                <br> Lesson4 class will Connect to database and for each server listed in SERVER_LIST execute CallableTask_Lesson4.submit()
+                <br>Although we made shutdown of Executer, it waits for both tasks to finish
+                <br>We have not yet achieved our goal which is commit after all tasks finished sucessfully. locConn.commit() is executed within Callable task.
+                <br>
+                <br>                
+          <li>Lesson 5 - move commit from CallableTask_Lesson4 to the executor part of code</li>
+                <br> In Lesson4 we opened connection in CallableTask_Lesson4. Executor knows nothing about what CallableTask is doing. If we want Executor to commit transactions from all servers, it will have to open them and pass connection as parameter to CallableTask
+                <br>
+                <br>
+          <li></li>             
+        </ol>           
     </body>
 </html>
