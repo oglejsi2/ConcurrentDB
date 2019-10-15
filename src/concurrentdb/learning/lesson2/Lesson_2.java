@@ -25,7 +25,7 @@ public class Lesson_2 {
      * In this session we add two important features
      * 1.   Parameter in call to the CallableTask_Lesson2 class and call to the CallableTask_Lesson2
      * 2.   Sleep time in the CallableTask_Lesson2.     
-     * Both will show us, how the tasks are executed. Both tasks are started at the same time. One with the larger number after OK or ERR, finishes after the other. 
+     * We need these two parameters to show how tasks are started. Both tasks are started at the same time. One with the larger number after OK or ERR, finishes after the other. 
      * Although we made shutdown of Executer, it waits for both tash to end and then continues.
      */
     

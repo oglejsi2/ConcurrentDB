@@ -24,6 +24,8 @@ import java.util.logging.Logger;
  * @author Robert
  */
 public class CallableTask_Lesson5 implements Callable {
+    Credentials lCredentials;
+            
     @Override
     public Object call() throws Exception {
         String lexecuteCommand = executeCommand();
@@ -69,7 +71,7 @@ public class CallableTask_Lesson5 implements Callable {
     
 
         
-    public String  executeCommand () {       
+    public String  executeCommand () {               
         String locSql="{call :result:=CONCURENTTRANSACTIONS.mydata_ins(:value)}";
         CallableStatement preparedCall;
         try {
@@ -79,7 +81,8 @@ public class CallableTask_Lesson5 implements Callable {
             preparedCall.setString(2, "myText");
             preparedCall.execute();
             lresult = preparedCall.getString(1);                        
-            preparedCall.close();            
+            preparedCall.close();  
+            System.out.println("lresult "+lresult);
         } catch (SQLException ex) {
             Logger.getLogger(CallableTask_Lesson5.class.getName()).log(Level.SEVERE, null, ex);
         }
